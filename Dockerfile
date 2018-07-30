@@ -1,12 +1,10 @@
 FROM gcr.io/google-appengine/aspnetcore:2.0 AS base
 WORKDIR /app
-EXPOSE 48602
-EXPOSE 44358
 
 FROM gcr.io/google-appengine/aspnetcore:2.0 AS build
 WORKDIR /src
 COPY SmartAdmin.Seed.csproj ./
-RUN dotnet restore /SmartAdmin.Seed.csproj
+RUN dotnet restore SmartAdmin.Seed.csproj
 COPY . .
 WORKDIR /src/
 RUN dotnet build SmartAdmin.Seed.csproj -c Release -o /app
