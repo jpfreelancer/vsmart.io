@@ -5,7 +5,9 @@
     <UserSecretsId>aspnet-SmartAdmin.Web-9FAA1EFF-D2A7-44DC-876C-B1467AF1E204</UserSecretsId>
     <TypeScriptToolsVersion>2.8</TypeScriptToolsVersion>
     
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>    
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    
+    <DockerComposeProjectPath>docker-compose.dcproj</DockerComposeProjectPath>    
   </PropertyGroup>
 
   <ItemGroup>
