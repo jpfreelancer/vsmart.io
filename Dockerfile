@@ -1,7 +1,7 @@
-FROM gcr.io/google-appengine/aspnetcore:2.0 AS base
+FROM microsoft/aspnetcore-build:2.0 AS base
 WORKDIR /app
 
-FROM gcr.io/google-appengine/aspnetcore:2.0 AS build
+FROM microsoft/aspnetcore-build:2.0 AS build
 WORKDIR /src
 COPY SmartAdmin.Seed.csproj ./
 RUN dotnet restore SmartAdmin.Seed.csproj
