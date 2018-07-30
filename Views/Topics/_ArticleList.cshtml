@@ -1,0 +1,70 @@
+﻿@{
+    @using SmartAdmin.Seed.Models.ManageViewModels;
+    @using System.Web;
+    @model TopicViewModel
+}
+@if (Model.Articles != null)
+{
+    @foreach (var article in Model.Articles)
+    {
+        <div class="row">
+            <div class="col-md-4">
+                @if (article.ImageUrl != null)
+                {
+                    <img src="@article.ImageUrl[0]" class="img-responsive" alt="img">
+                }
+                else
+                {
+                    <img src="~/img/news-placeholder.png" class="img-responsive" alt="img">
+                }
+
+                <ul class="list-inline padding-10">
+                    <li>
+                        <i class="fa fa-calendar"></i> Ngày quét:
+                        <a href="javascript:void(0);"> @article.Modified[0] </a>
+                    </li>
+
+                </ul>
+            </div>
+            <div class="col-md-8 padding-left-0">
+                <h3 class="margin-top-0">
+                    <a target="_blank" href="@article.Url[0]"> @article.Title[0] </a>
+                </h3>
+                <div class="url text-success">
+                    <i class="fa fa-link"></i> <a target="_blank" href="@article.Url[0]">@article.Url[0]</a>
+                </div>
+                <br />
+                <p class="text-justify">
+                    @article.Description[0]
+                </p>
+                <p class="text-justify">
+                    @article.Content[0]
+                </p>
+                <a class="btn btn-info" asp-controller="Tasks" asp-action="Create" asp-route-url="@article.Url[0]" asp-route-title="@article.Title[0]" asp-route-topicID="@Model.ID" data-toggle="modal" data-target="#remoteModal"> Xử lý </a>
+
+            </div>
+        </div>
+        <hr>
+
+    }
+
+
+}
+<div class="row">
+    <div class="col-md-12 text-center">
+        @if (Model.NoOfPosts == 0)
+        {
+            <span><i class="fa-fw fa fa-info"></i> Không tìm thấy bài viết liên quan! </span>
+
+        }
+        else
+        {
+            if (Model.page * Model.size < Model.NoOfPosts)
+            {
+                <a id="btn-load-more" href="javascript:void(0);" class="btn btn-primary">Tải thêm bài viết <i class="fa fa-arrow-down"></i></a>
+            }
+
+        }
+
+    </div>
+</div>

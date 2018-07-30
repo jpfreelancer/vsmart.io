@@ -1,0 +1,354 @@
+
+@{
+    ViewData["Title"] = "TaskView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    @using SmartAdmin.Seed.Models.ManageViewModels;
+    @model TaskViewModel
+}
+
+<div class="row">
+
+    <!-- col -->
+    <div class="col-xs-12 col-sm-7 col-md-7 col-lg-12">
+        <h1 class="page-title txt-color-blueDark">
+            <!-- PAGE HEADER -->
+            <a asp-action="Index" asp-controller="Tasks">
+                <i class="fa-fw fa fa-cog"></i>
+                Danh sách tác vụ
+            </a>
+            <span>
+                >
+                @Model.ArticleTitle
+            </span>
+        </h1>
+    </div>
+    <!-- end col -->
+
+
+</div>
+<div class="row">
+
+    <div class="col-sm-9">
+
+        <div class="well padding-10">
+            <div class="row">
+                <div class="col-md-4">
+                    @if (Model.ArticleImageUrl != null)
+                    {
+                        <img src="@Model.ArticleImageUrl" class="img-responsive" alt="img">
+                    }
+                    else
+                    {
+                        <img src="~/img/news-placeholder.png" class="img-responsive" alt="img">
+                    }
+
+                </div>
+                <div class="col-md-8 padding-left-0">
+                    <h3 class="margin-top-0">
+                        <a target="_blank" href="@Model.ArticleUrl"> @Model.ArticleTitle </a>
+                    </h3>
+                    <div class="url text-success">
+                        <i class="fa fa-link"></i> <a target="_blank" href="@Model.ArticleUrl">@Model.ArticleUrl</a>
+                    </div>
+                    <br />
+                    <p class="text-justify">
+                        @Model.ArticleDescription
+                    </p>
+                    <p class="text-justify">
+                        @Model.ArticleContent
+                    </p>
+
+
+                </div>
+            </div>
+            <div class="row">
+                <section class="col col-lg-12">
+
+                    <ul id="query-tab" class="nav nav-tabs bordered">
+                        <li class="active">
+                            <a href="#s1" data-toggle="tab"><i class="fa fa-fw fa-lg fa-history"></i> Lịch sử quét </a>
+                        </li>
+                        <li>
+                            <a href="#s2" data-toggle="tab"><i class="fa fa-fw fa-lg fa-comments"></i> Ý kiến xử lý </a>
+                        </li>
+                    </ul>
+                    <div id="query-content" class="tab-content">
+                        <div class="tab-pane fade active in padding-10 no-padding-bottom" id="s1">
+                            @if (Model.ArticleVersions != null)
+                            {
+                                <!-- Timeline Content -->
+                                <div class="smart-timeline">
+                                    <ul class="smart-timeline-list">
+                                        @foreach (var version in Model.ArticleVersions)
+                                        {
+                                            <li>
+                                                <div class="smart-timeline-icon">
+                                                    <i class="fa fa-file-text"></i>
+                                                </div>
+                                                <div class="smart-timeline-time">
+                                                    <small>@version.DateCreated</small>
+                                                </div>
+                                                <div class="smart-timeline-content">
+                                                    <p>
+                                                        <a href="javascript:void(0);">
+                                                            <strong>Đã quét phiên bản @version.ID</strong>
+                                                        </a>
+                                                    </p>
+                                                    <p>
+                                                        @version.ArticleTitle
+                                                    </p>
+                                                    <p>
+                                                        <a asp-action="ArticleVersionsView" asp-controller="Tasks" data-toggle="modal" data-target="#remoteModal" class="btn btn-xs btn-primary"><i class="fa fa-file"></i> Xem </a>
+                                                    </p>
+
+
+                                                </div>
+                                            </li>
+
+                                        }
+
+                                    </ul>
+                                </div>
+                                <!-- END Timeline Content -->
+
+                            }
+
+
+                        </div>
+                        <div class="tab-pane padding-10 fade" id="s2">
+                            <table class="table table-striped table-forum">
+
+                                <tbody>
+                                    <!-- Post -->
+                                    <tr>
+                                        <td class="text-center">
+                                            <a href="#ajax/profile.html">
+                                                &nbsp;
+                                                <strong>John Doe</strong>
+                                            </a>
+                                        </td>
+                                        <td>on <em>Jan 1, 2014 - 12:00am</em></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center" style="width: 12%;">
+                                            <div class="push-bit">
+                                                <a href="#ajax/profile.html">
+                                                    <img src="~/img/avatars/sunny.png" width="50" alt="avatar" class="online">
+                                                </a>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <p>Cần xử phạt thật nặng</p>
+                                        </td>
+                                    </tr>
+                                    <!-- end Post -->
+                                    <!-- Post -->
+                                    <tr>
+                                        <td class="text-center">
+                                            <a href="#ajax/profile.html">
+                                                &nbsp;
+                                                <strong>Me</strong>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <em>Today</em>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-center" style="width: 12%;">
+                                            <div class="push-bit">
+                                                <a href="#ajax/profile.html">
+                                                    <img src="~/img/avatars/sunny.png" width="50" alt="avatar" class="online">
+                                                </a>
+                                            </div>
+                                            <small>473 Posts</small>
+                                        </td>
+                                        <td>
+
+                                            <div id="forumPost"></div>
+                                            <button class="btn btn-primary margin-top-10">Post</button>
+                                            <button class="btn btn-success margin-top-10">Save for later</button>
+
+                                        </td>
+                                    </tr>
+                                    <!-- end Post -->
+
+                                </tbody>
+                            </table>
+
+                            <div class="text-center">
+                                <ul class="pagination pagination-sm">
+                                    <li class="disabled">
+                                        <a href="javascript:void(0);">Prev</a>
+                                    </li>
+                                    <li class="active">
+                                        <a href="javascript:void(0);">1</a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0);">2</a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0);">3</a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0);">...</a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0);">99</a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0);">Next</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+        </div>
+
+
+
+    </div>
+
+    <div class="col-sm-3">
+        <div class="well padding-10">
+            <h5 class="margin-top-0"><i class="fa fa-pencil"></i> Mô tả tác vụ</h5>
+            <p class="text-justify">
+                @Model.Description
+            </p>
+            <p class="text-justify">
+                <i class="fa fa-user"></i> <strong>Người tạo:</strong> @Model.UserName
+            </p>
+            <p class="text-justify">
+                <i class="fa fa-calendar"></i> <strong>Ngày tạo:</strong> @Model.DateCreated
+            </p>
+            <p class="text-justify">
+                <i class="fa fa-calendar"></i> <strong>Cập nhật cuối:</strong> @Model.LastModified
+            </p>
+            <hr />
+            <div class="row">
+                <div class="col-md-6">
+                    <h5 class="margin-top-0"><i class="fa fa-exclamation-triangle"></i> Trạng thái</h5>
+                    @if (Model.Status == "Active")
+                    {
+                        <span class="label label-primary">Đang hoạt động</span>
+                    }
+                    else
+                    {
+                        <span class="label label-default">Ngừng hoạt động</span>
+                    }
+                </div>
+                <div class="col-md-6">
+                    <h5 class="margin-top-0"><i class="fa fa-star"></i> Độ ưu tiên:</h5>
+                    @if (Model.Priority == "High")
+                    {
+                        <span class="label label-danger"><i class="fa fa-warning"></i> Cao</span>
+                    }
+                    @if (Model.Priority == "Normal")
+                    {
+                        <span class="label label-warning"><i class="fa fa-info"></i> Bình thường</span>
+                    }
+                </div>
+            </div>
+            @if (Model.ArticleVersions != null && Model.ArticleVersions.Count != 0)
+            {
+                <hr />
+                <div class="row">
+                    <div class="col-md-12">
+                        <h5 class="margin-top-0"><i class="fa fa-list"></i> Danh sách phiên bản:</h5>
+                        @foreach (var article in Model.ArticleVersions)
+                        {
+                            <p class="text-justify">
+                                <i class="fa fa-file-archive-o"></i> <strong>Phiên bản @article.VersionNumber: </strong>@article.DateCreated
+                            </p>
+                        }
+
+                    </div>
+                </div>
+
+            }
+
+        </div>
+        <!-- /well -->
+        <!-- /well -->
+        <!-- /well -->
+        <!-- /well -->
+        <!-- /well -->
+        <!-- /well -->
+
+    </div>
+
+</div>
+<!-- MODAL PLACE HOLDER -->
+<div class="modal fade" id="remoteModal" tabindex="-1" role="dialog" aria-labelledby="remoteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="width:1024px">
+        <div class="modal-content"></div>
+    </div>
+</div>
+<!-- END MODAL -->
+
+@section Scripts {
+    <script type="text/javascript">
+        /* DO NOT REMOVE : GLOBAL FUNCTIONS!
+     *
+     * pageSetUp(); WILL CALL THE FOLLOWING FUNCTIONS
+     *
+     * // activate tooltips
+     * $("[rel=tooltip]").tooltip();
+     *
+     * // activate popovers
+     * $("[rel=popover]").popover();
+     *
+     * // activate popovers with hover states
+     * $("[rel=popover-hover]").popover({ trigger: "hover" });
+     *
+     * // activate inline charts
+     * runAllCharts();
+     *
+     * // setup widgets
+     * setup_widgets_desktop();
+     *
+     * // run form elements
+     * runAllForms();
+     *
+     ********************************
+     *
+     * pageSetUp() is needed whenever you load a page.
+     * It initializes and checks for all basic elements of the page
+     * and makes rendering easier.
+     *
+     */
+
+        pageSetUp();
+
+        /*
+         * ALL PAGE RELATED SCRIPTS CAN GO BELOW HERE
+         * eg alert("my home function");
+         *
+         * var pagefunction = function() {
+         *   ...
+         * }
+         * loadScript("/js/plugin/_PLUGIN_NAME_.js", pagefunction);
+         *
+         */
+
+        // pagefunction
+
+        var pagefunction = function () {
+
+            // run picadiff
+            $(".picadiff").picadiff({
+                lineLength: 60                
+            });
+
+        };
+
+        // end pagefunction
+        //pagefunction();
+
+
+
+    </script>
+}

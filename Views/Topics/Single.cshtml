@@ -1,0 +1,291 @@
+
+@{
+    ViewData["Title"] = "Single";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    
+}
+
+<!-- Bread crumb is created dynamically -->
+<!-- row -->
+<div class="row">
+
+    <!-- col -->
+    <div class="col-xs-12 col-sm-7 col-md-7 col-lg-12">
+        @if (ViewData["SuccessMessage"] != null)
+        {
+            <div class="alert alert-success fade in">
+                <button class="close" data-dismiss="alert">
+                    ×
+                </button>
+                <i class="fa-fw fa fa-info"></i>
+                <strong> @ViewData["SuccessMessage"].ToString() </strong>
+            </div>
+        }
+
+        <h1 class="page-title txt-color-blueDark">
+            <!-- PAGE HEADER -->
+            <a asp-action="Index" asp-controller="Topics">
+                <i class="fa-fw fa fa-file-text-o"></i>
+                Danh sách chủ đề
+            </a>
+            <span>
+                >
+                @ViewData["TopicName"].ToString()
+            </span>
+        </h1>
+    </div>
+    <!-- end col -->
+
+
+</div>
+<!-- end row -->
+
+<div class="row">
+
+    <div class="col-sm-9">
+
+        <div id="articles" class="well padding-10">
+            <span id="loader">Đang tải dữ liệu...<i class="fa fa-cogs fa-spin txt-color-blueDark"></i></span>
+        </div>
+
+
+
+    </div>
+
+    <div class="col-sm-3">
+
+        <!-- /well -->
+        <div class="well padding-10">
+            <h5 class="margin-top-0"><i class="fa fa-filter"></i> Lọc bài viết:</h5>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-group">
+                        <label>Thời gian</label>
+                        <div class="input-group">
+                            <input class="form-control" id="startdate" type="text" placeholder="Từ ngày">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <input class="form-control" id="enddate" type="text" placeholder="đến ngày">
+                            <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-group">
+                        <label>Nguồn tin</label>
+                        <select multiple style="width: 100%" class="select2">
+                            <optgroup label="Báo điện tử">
+                                <option value="vnexpress">VNexpress</option>
+                                <option value="dantri.com.vn">Dân trí</option>
+                            </optgroup>
+                            <optgroup label="Mạng xã hội">
+                                <option value="vnexpress">Facebook</option>
+                                <option value="dantri.com.vn">Twitter</option>
+                            </optgroup>
+                        </select>
+
+                    </div>
+                    <a class="btn btn-info"><i class="fa fa-filter"></i> Lọc </a>
+                </div>
+
+            </div>
+
+        </div>
+        <!-- /well -->
+        <!-- /well -->
+        <!-- /well -->
+        <!-- /well -->
+        <!-- /well -->
+        <!-- /well -->
+
+    </div>
+
+</div>
+
+<!-- MODAL PLACE HOLDER -->
+<div class="modal fade" id="remoteModal" tabindex="-1" role="dialog" aria-labelledby="remoteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content"></div>
+    </div>
+</div>
+<!-- END MODAL -->
+<!-- end row -->
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+    <script type="text/javascript">
+        /* DO NOT REMOVE : GLOBAL FUNCTIONS!
+     *
+     * pageSetUp(); WILL CALL THE FOLLOWING FUNCTIONS
+     *
+     * // activate tooltips
+     * $("[rel=tooltip]").tooltip();
+     *
+     * // activate popovers
+     * $("[rel=popover]").popover();
+     *
+     * // activate popovers with hover states
+     * $("[rel=popover-hover]").popover({ trigger: "hover" });
+     *
+     * // activate inline charts
+     * runAllCharts();
+     *
+     * // setup widgets
+     * setup_widgets_desktop();
+     *
+     * // run form elements
+     * runAllForms();
+     *
+     ********************************
+     *
+     * pageSetUp() is needed whenever you load a page.
+     * It initializes and checks for all basic elements of the page
+     * and makes rendering easier.
+     *
+     */
+
+        pageSetUp();
+
+        /*
+        * ALL PAGE RELATED SCRIPTS CAN GO BELOW HERE
+        * eg alert("my home function");
+        *
+        * var pagefunction = function() {
+        *   ...
+        * }
+        * loadScript("/js/plugin/_PLUGIN_NAME_.js", pagefunction);
+        *
+        * TO LOAD A SCRIPT:
+        * var pagefunction = function (){
+        *  loadScript(".../plugin.js", run_after_loaded);
+        * }
+        *
+        * OR you can load chain scripts by doing
+        *
+        * loadScript(".../plugin.js", function(){
+        * 	 loadScript("../plugin.js", function(){
+        * 	   ...
+        *   })
+        * });
+        */
+
+        // pagefunction
+
+        var pagefunction = function () {
+            // clears the variable if left blank
+            runAllForms();
+            //display articles
+            $.ajax({
+                type: "GET",
+                url: "/Topics/GetArticles?ID=@ViewData["ID"]",              
+                
+                success: function (response) {
+                    var dvArticles = $("#articles");
+                    $("#loader").hide();
+                    dvArticles.hide();
+                    dvArticles.append(response);
+                    dvArticles.fadeIn('slow');
+                },
+                failure: function (response) {
+                    alert(response);
+                }
+            });
+            
+            $('body').on('click', '#btn-load-more', function () {
+                                
+                $(this).html('Đang tải dữ liệu... <i class="fa fa-arrow-down fa-spin"></i>');
+                //dvArticles.append(loader);
+
+                $.ajax({
+                type: "GET",
+                url: "/Topics/GetArticles?ID=@ViewData["ID"]" + "&page=@((int)ViewData["Page"] + 1)",              
+                
+                success: function (response) {
+                    var dvArticles = $("#articles");
+                    //dvArticles.empty();
+                    $("#btn-load-more").remove();
+                    var data = $(response);
+                    data.hide();
+                    dvArticles.append(data);
+                    data.fadeIn('slow');
+                },
+                failure: function (response) {
+                    alert(response);
+                }
+            });
+            });
+
+            var errorClass = 'invalid';
+            var errorElement = 'em';
+
+            var taskForm = $("#smart-form-task").validate({
+                errorClass: errorClass,
+                errorElement: errorElement,
+                highlight: function (element) {
+                    $(element).parent().removeClass('state-success').addClass("state-error");
+                    $(element).removeClass('valid');
+                },
+                unhighlight: function (element) {
+                    $(element).parent().removeClass("state-error").addClass('state-success');
+                    $(element).addClass('valid');
+                },
+                // Rules for form validation
+                rules: {
+                    Description: {
+                        required: true
+                    },
+                    Priority: {
+                        required: false
+                    },
+                    Frequency: {
+                        required: false
+                    }
+                },
+
+                // Messages for form validation
+                messages: {
+                    Description: {
+                        required: 'Mô tả không được để trống'
+                    }
+                },
+
+                // Do not change code below
+                errorPlacement: function (error, element) {
+                    error.insertAfter(element.parent());
+                }
+            });
+
+            // Date Range Picker
+            $('#startdate').datepicker({
+                dateFormat: 'dd/mm/yy',
+                prevText: '<i class="fa fa-chevron-left"></i>',
+                nextText: '<i class="fa fa-chevron-right"></i>',
+                onSelect: function (selectedDate) {
+                    $('#enddate').datepicker('option', 'minDate', selectedDate);
+                }
+            });
+            $('#enddate').datepicker({
+                dateFormat: 'dd/mm/yy',
+                prevText: '<i class="fa fa-chevron-left"></i>',
+                nextText: '<i class="fa fa-chevron-right"></i>',
+                onSelect: function (selectedDate) {
+                    $('#startdate').datepicker('option', 'maxDate', selectedDate);
+                }
+            });
+        };
+
+        // end pagefunction
+
+        // run pagefunction
+        pagefunction();
+
+    </script>
+}

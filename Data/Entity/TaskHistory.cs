@@ -1,0 +1,15 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace SmartAdmin.Seed.Data.Entity
+{
+    public class TaskHistory
+    {
+        public int ID { get; set; }
+        public string Description { get; set; }
+        public DateTime DateCreated { get; set; }
+        public Guid UserID { get; set; }
+    }
+}

@@ -1,0 +1,157 @@
+@{
+    ViewData["Title"] = "TaskView";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    @using SmartAdmin.Seed.Data.Entity
+    @model List<Topics>
+}
+<div class="row">
+    <div class="col-xs-12 col-sm-7 col-md-7 col-lg-12">
+
+        <h1 class="page-title txt-color-blueDark">
+            <!-- PAGE HEADER -->
+            <i class="fa-fw fa fa-file-text-o"></i>
+            Báo cáo theo chủ đề
+
+            <span>
+
+            </span>
+        </h1>
+    </div>
+</div>
+<!-- row -->
+<div class="row">
+    <div class="col-sm-12">
+        <div class="well padding-10">
+            <form asp-controller="Report" asp-action="ReportByTopics" method="post" id="smart-form" target="_blank" novalidate="novalidate">
+                <fieldset>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label>Tiêu đề báo cáo:</label>
+                                <div class="input-group">
+                                    <input type="text" name="ReportTitle" placeholder="Tiêu đề báo cáo" class="form-control">
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-pencil"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <label>Chọn chủ đề</label>
+                                <select style="width: 100%" class="select2" name="ID">
+                                    @foreach (var topic in Model)
+                                    {
+                                        <option value="@topic.ID">@topic.TopicName</option>
+                                    }                                    
+
+                                </select>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+
+
+                        <div class="col-sm-12">
+                            <label>Chọn khoảng thời gian:</label>
+                        </div>
+                        <div class="col-sm-6">
+
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input class="form-control" id="from" name="StartDate" type="text" placeholder="Từ ngày">
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </span>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-sm-6">
+
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input class="form-control" id="to" type="text" name="EndDate" placeholder="đến ngày">
+                                    <span class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 text-align-center">
+                            <button type="submit" id="btn-Submit" class="btn btn-primary" style="padding: 7px">
+                                <i class="fa fa-cloud-download"></i>
+                                Xuất báo cáo
+                            </button>
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>
+@section Scripts {
+    <script type="text/javascript">
+        pageSetUp();
+        var pagefunction = function () {
+
+            $("#btnSubmit").click(function () {
+                $.ajax({
+                    url: $("#smart-form").attr('action'),
+                    type: $("#smart-form").attr('method'),
+                    beforeSend: function () {
+                    },
+                    data: $("#smart-form").serialize() 
+                }).done(function (result) {
+                    if (result.OpenUrl) {
+                        window.open(result.OpenUrl, '_blank');
+                    }
+                    if (result.redirectTo) {
+                        setTimeout(function () {
+                            window.location.href = result.redirectTo;
+                        }, 2000);
+                    }
+
+
+                });
+            })
+
+            // Date Range Picker
+            $("#from").datepicker({
+                defaultDate: "+1w",
+                dateFormat: 'dd-mm-yy',
+                changeMonth: true,
+                numberOfMonths: 2,
+                prevText: '<i class="fa fa-chevron-left"></i>',
+                nextText: '<i class="fa fa-chevron-right"></i>',
+                onClose: function (selectedDate) {
+                    $("#to").datepicker("option", "minDate", selectedDate);
+                }
+
+            });
+            $("#to").datepicker({
+                defaultDate: "+1w",
+                dateFormat: 'dd-mm-yy',
+                changeMonth: true,
+                numberOfMonths: 2,
+                prevText: '<i class="fa fa-chevron-left"></i>',
+                nextText: '<i class="fa fa-chevron-right"></i>',
+                onClose: function (selectedDate) {
+                    $("#from").datepicker("option", "maxDate", selectedDate);
+                }
+            });
+
+        }
+        pagefunction();
+    </script>
+}
+
+
+<!-- end row -->

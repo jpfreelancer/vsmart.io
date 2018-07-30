@@ -1,0 +1,332 @@
+
+@{
+    @using SmartAdmin.Seed.Models.ManageViewModels
+    @model List<TaskViewModel>
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!-- Bread crumb is created dynamically -->
+<!-- row -->
+<div class="row">
+
+    <!-- col -->
+    <div class="col-xs-12 col-sm-7 col-md-7 col-lg-4">
+        <h1 class="page-title txt-color-blueDark">
+            <!-- PAGE HEADER -->
+            <i class="fa-fw fa fa-tasks"></i>
+            Quản lý tác vụ
+
+        </h1>
+    </div>
+    <!-- end col -->
+
+
+</div>
+<!-- end row -->
+<!--
+The ID "widget-grid" will start to initialize all widgets below
+You do not need to use widgets if you dont want to. Simply remove
+the <section></section> and you can use wells or panels instead
+-->
+<!-- widget grid -->
+<section id="widget-grid" class="">
+
+    <!-- row -->
+    <div class="row">
+
+        <!-- NEW WIDGET START -->
+        <article class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+
+
+            <!-- Widget ID (each widget will need unique ID)-->
+            <div class="jarviswidget well" id="wid-id-0">
+                <!-- widget options:
+                usage: <div class="jarviswidget" id="wid-id-0" data-widget-editbutton="false">
+
+                data-widget-colorbutton="false"
+                data-widget-editbutton="false"
+                data-widget-togglebutton="false"
+                data-widget-deletebutton="false"
+                data-widget-fullscreenbutton="false"
+                data-widget-custombutton="false"
+                data-widget-collapsed="true"
+                data-widget-sortable="false"
+
+                -->
+                <header>
+                    <span class="widget-icon">
+                        <i class="fa fa-comments"></i>
+                    </span>
+                    <h2>Widget Title </h2>
+
+                </header>
+
+                <!-- widget div-->
+                <div>
+
+                    <!-- widget edit box -->
+                    <div class="jarviswidget-editbox">
+                        <!-- This area used as dropdown edit box -->
+                        <input class="form-control" type="text">
+                    </div>
+                    <!-- end widget edit box -->
+                    <!-- widget content -->
+                    <div class="widget-body no-padding">
+
+                        <table id="example" class="display projects-table table table-striped table-bordered table-hover" cellspacing="0" width="100%">
+                            <thead>
+                                <tr>                                    
+                                    <th>Tin bài cần xử lý</th>
+
+                                    <th>Độ ưu tiên</th>
+                                    <th>Trạng thái</th>
+                                    <th>Tạo bởi</th>
+                                    <th><i class="fa fa-fw fa-calendar text-muted hidden-md hidden-sm hidden-xs"></i> Ngày tạo</th>
+                                    <th><i class="fa fa-fw fa-calendar text-muted hidden-md hidden-sm hidden-xs"></i> Cập nhật </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                                @if (Model != null && Model.Count != 0)
+                                {
+                                    int i = 1; 
+                                        foreach (var task in Model)
+                                    {
+                                        <tr>                                            
+                                            
+                                            <td><a asp-controller="Tasks" asp-action="TaskView" asp-route-ID="@task.ID"> @task.ArticleTitle </a></td>
+                                            <td>
+                                                @if (task.Priority == "High")
+                                                {
+                                                    <span class="label label-danger"><i class="fa fa-warning"></i> Cao</span>
+                                                }
+                                                @if (task.Priority == "Normal")
+                                                {
+                                                    <span class="label label-warning"><i class="fa fa-info"></i> Bình thường</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (task.Status == "Active")
+                                                {
+                                                    <span class="label label-primary">Đang hoạt động</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="label label-default">Ngừng hoạt động</span>
+                                                }
+
+                                            </td>
+                                            <td>
+                                                @task.UserName
+                                            </td>
+                                            <td>
+                                                @task.DateCreated
+                                            </td>
+
+                                            <td>
+                                                @task.LastModified
+                                            </td>
+                                            <td>
+                                                <button class="btn btn-sm btn-danger pull-right" style="margin-left:5px">Xóa</button>
+                                            </td>
+                                        </tr>
+                                        i++;
+                                    }
+
+                                }
+
+
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <!-- end widget content -->
+
+                </div>
+                <!-- end widget div -->
+
+            </div>
+            <!-- end widget -->
+
+        </article>
+        <!-- WIDGET END -->
+
+    </div>
+
+    <!-- end row -->
+    <!-- row -->
+
+    <div class="row">
+
+        <!-- a blank row to get started -->
+        <div class="col-sm-12">
+            <!-- your contents here -->
+        </div>
+
+    </div>
+
+    <!-- end row -->
+
+</section>
+<!-- end widget grid -->
+@section Scripts {
+    <script type="text/javascript">
+
+        /* DO NOT REMOVE : GLOBAL FUNCTIONS!
+     *
+     * pageSetUp(); WILL CALL THE FOLLOWING FUNCTIONS
+     *
+     * // activate tooltips
+     * $("[rel=tooltip]").tooltip();
+     *
+     * // activate popovers
+     * $("[rel=popover]").popover();
+     *
+     * // activate popovers with hover states
+     * $("[rel=popover-hover]").popover({ trigger: "hover" });
+     *
+     * // activate inline charts
+     * runAllCharts();
+     *
+     * // setup widgets
+     * setup_widgets_desktop();
+     *
+     * // run form elements
+     * runAllForms();
+     *
+     ********************************
+     *
+     * pageSetUp() is needed whenever you load a page.
+     * It initializes and checks for all basic elements of the page
+     * and makes rendering easier.
+     *
+     */
+
+        pageSetUp();
+
+        /*
+         * ALL PAGE RELATED SCRIPTS CAN GO BELOW HERE
+         * eg alert("my home function");
+         *
+         * var pagefunction = function() {
+         *   ...
+         * }
+         * loadScript("/js/plugin/_PLUGIN_NAME_.js", pagefunction);
+         *
+         * TO LOAD A SCRIPT:
+         * var pagefunction = function (){
+         *  loadScript(".../plugin.js", run_after_loaded);
+         * }
+         *
+         * OR you can load chain scripts by doing
+         *
+         * loadScript(".../plugin.js", function(){
+         * 	 loadScript("../plugin.js", function(){
+         * 	   ...
+         *   })
+         * });
+         */
+
+        // pagefunction
+        var pagefunction = function () {
+
+            /* Formatting function for row details - modify as you need */
+            function format(d) {
+                // `d` is the original data object for the row
+                return '<table cellpadding="5" cellspacing="0" border="0" class="table table-hover table-condensed">' +
+                    '<tr>' +
+                    '<td style="width:100px">Project Title:</td>' +
+                    '<td>' +
+                    d.name +
+                    '</td>' +
+                    '</tr>' +
+                    '<tr>' +
+                    '<td>Deadline:</td>' +
+                    '<td>' +
+                    d.ends +
+                    '</td>' +
+                    '</tr>' +
+                    '<tr>' +
+                    '<td>Extra info:</td>' +
+                    '<td>And any further details here (images etc)...</td>' +
+                    '</tr>' +
+                    '<tr>' +
+                    '<td>Comments:</td>' +
+                    '<td>' +
+                    d.comments +
+                    '</td>' +
+                    '</tr>' +
+                    '<tr>' +
+                    '<td>Action:</td>' +
+                    '<td>' +
+                    d.action +
+                    '</td>' +
+                    '</tr>' +
+                    '</table>';
+            }
+
+            // clears the variable if left blank
+            var table = $('#example').DataTable({
+                "sDom": "<'dt-toolbar'<'col-xs-12 col-sm-6'f><'col-sm-6 col-xs-12 hidden-xs'l>r>" +
+                    "t" +
+                    "<'dt-toolbar-footer'<'col-sm-6 col-xs-12 hidden-xs'i><'col-xs-12 col-sm-6'p>>",
+                "oLanguage": {
+                    "sSearch": '<span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span>'
+                },
+                "iDisplayLength": 15,
+                "order": [[1, 'asc']],
+                "fnDrawCallback": function (oSettings) {
+                    runAllCharts();
+                }
+            });
+
+
+        };
+
+        // end pagefunction
+
+        // destroy generated instances
+        // pagedestroy is called automatically before loading a new page
+        // only usable in AJAX version!
+
+        var pagedestroy = function () {
+
+            /*
+            Example below:
+
+            $("#calednar").fullCalendar( 'destroy' );
+            if (debugState){
+                root.console.log("✔ Calendar destroyed");
+            }
+
+            For common instances, such as Jarviswidgets, Google maps, and Datatables, are automatically destroyed through the app.js loadURL mechanic
+
+            */
+            //$('#example').find('*').addBack().off().remove();
+
+        };
+
+        // end destroy
+
+        // load related plugins & run pagefunction
+        loadScript("/js/plugin/datatables/jquery.dataTables.min.js",
+            function () {
+                loadScript("/js/plugin/datatables/dataTables.colVis.min.js",
+                    function () {
+                        loadScript("/js/plugin/datatables/dataTables.tableTools.min.js",
+                            function () {
+                                loadScript("/js/plugin/datatables/dataTables.bootstrap.min.js",
+                                    function () {
+                                        loadScript("/js/plugin/datatable-responsive/datatables.responsive.min.js",
+                                            pagefunction);
+                                    });
+                            });
+                    });
+            });
+
+    </script>
+}
+
+

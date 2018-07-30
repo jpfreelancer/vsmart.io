@@ -1,0 +1,194 @@
+@{
+    @using SmartAdmin.Seed.Models.ManageViewModels
+    @model TopicViewModel
+}
+<div class="modal-header alert alert-block alert-info">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+        ×
+    </button>
+    @if (ViewData["Action"].ToString() == "Create")
+    {
+        <h6 class="modal-title alert-heading"><i class="fa fa-pencil"></i> Tạo mới chủ đề</h6>
+    }
+    else
+    {
+        <h6 class="modal-title alert-heading"><i class="fa fa-pencil"></i> Cấu hình chủ đề</h6>
+    }
+
+</div>
+<form asp-controller="Topics" asp-action="@ViewData["Action"].ToString()" method="post" id="topic-form" class="smart-form" novalidate="novalidate">
+    <div class="modal-body no-padding">
+        
+
+        <fieldset style="padding-top:0px;">
+            <div class="row">
+                <section class="col col-lg-12">
+                    <label class="label">Tên chủ đề</label>
+                    <label class="input" asp-for="TopicName">
+                        <i class="icon-append fa fa-pencil"></i>
+                        <input asp-for="TopicName" type="text" name="TopicName" id="topicname" placeholder="Nhập tên chủ đề">
+                    </label>
+                </section>
+
+                <section class="col col-lg-12">
+                    <label class="label">Mô tả chủ đề</label>
+                    <label class="textarea" asp-for="Description">
+                        <i class="icon-append fa fa-pencil"></i>
+                        <textarea asp-for="Description" rows="2" name="Description" id="description" placeholder="Nhập mô tả chủ đề"></textarea>
+                    </label>
+                </section>
+            </div>
+            
+        </fieldset>
+        <fieldset>
+            <div class="row">
+                <section class="col col-lg-12">
+                    <label class="label">Quy tắc lấy dữ liệu</label>
+                    <ul id="query-tab" class="nav nav-tabs bordered">
+                        <li class="active">
+                            <a href="#s1" data-toggle="tab"><i class="fa fa-fw fa-lg fa-gear"></i> Xây dựng quy tắc </a>
+                        </li>
+                        <li>
+                            <a href="#s2" data-toggle="tab">Quy tắc</a>
+                        </li>
+                    </ul>
+                    <div id="query-content" class="tab-content">
+                        <div class="tab-pane fade active in padding-10 no-padding-bottom" id="s1">
+                            <div id="builder"></div>
+                            <a class="btn btn-success" id="btn-get-rule" style="padding: 6px 12px!important;"> Cập nhật quy tắc</a>
+                        </div>
+                        <div class="tab-pane padding-10 fade" id="s2">
+                            <label asp-for="Rules" class="textarea">
+                                <textarea asp-for="Rules" readonly rows="6" name="Rules" id="extracted-rule"></textarea>
+                            </label>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+
+            <div class="row">
+                <section class="col col-lg-12">
+                    <label class="label">Chọn nguồn tin</label>
+                    <div class="inline-group">
+                        <label class="checkbox">
+                            <input type="checkbox" name="checkbox-inline" checked="checked">
+                            <i></i>Báo mạng
+                        </label>
+                        <label class="checkbox">
+                            <input type="checkbox" name="checkbox-inline">
+                            <i></i>Diễn đàn
+                        </label>
+                        <label class="checkbox">
+                            <input type="checkbox" name="checkbox-inline">
+                            <i></i>Facebook
+                        </label>
+                        <label class="checkbox">
+                            <input type="checkbox" name="checkbox-inline">
+                            <i></i>Twitter
+                        </label>
+                    </div>
+                </section>
+            </div>
+        </fieldset>
+        <fieldset>
+            <div class="row">
+
+
+                <section class="col col-lg-12">
+
+                    <div class="onoffswitch-container">
+                        <span class="onoffswitch-title">Chủ đề nổi bật</span>
+                        <span class="onoffswitch">
+                            <input asp-for="isFeatured" type="checkbox" class="onoffswitch-checkbox" id="autoopen">
+                            <label class="onoffswitch-label" for="autoopen">
+                                <span class="onoffswitch-inner" data-swchon-text="BẬT" data-swchoff-text="TẮT"></span>
+                                <span class="onoffswitch-switch"></span>
+                            </label>
+                        </span>
+                    </div>
+
+                </section>
+            </div>
+        </fieldset>
+
+
+
+    </div>
+    <div class="modal-footer" style="padding: 20px;">
+        <button type="button" class="btn btn-default" style="padding: 7px" data-dismiss="modal">
+            <i class="fa fa-times"></i>
+            Đóng
+        </button>
+        <button type="submit" class="btn btn-primary" style="padding: 7px">
+            <i class="fa fa-save"></i>
+            Cập nhật
+        </button>
+    </div>
+</form>
+
+
+<script type="text/javascript">
+    // run pagefunction on load
+    $(".modal").on("hidden.bs.modal", function () {
+        $(".modal-body").html("");
+        console.log("modal content clear!");
+
+    });
+    /*
+             * QUERY BUILDER
+             */
+    loadScript("/js/plugin/jquery-querybuilder/query-builder.standalone.js", function () {
+        console.log("jQuery Query Builder Loaded!")
+        var rules_basic = {};
+        if ($('#extracted-rule').val() != "") {
+            str = $('#extracted-rule').val();
+            rules_basic = $.parseJSON(str);
+            console.log(rules_basic);
+        } else {
+            rules_basic = {
+                condition: 'AND',
+                rules: [{
+                    id: 'description',
+                    operator: 'contains',
+                    value: ""
+                }]
+            };
+        }
+        $('#builder').queryBuilder({
+            plugins: ['bt-tooltip-errors'],
+
+            filters: [{
+                id: 'description',
+                label: 'Nội dung',
+                type: 'string',
+                operators: ['contains']
+            }, {
+                id: 'title',
+                label: 'Tiêu đề',
+                type: 'string',
+                operators: ['contains']
+            }, {
+                id: 'url',
+                label: 'Đường link',
+                type: 'string',
+                operators: ['contains']
+            }],
+            rules: rules_basic
+        });
+
+        $('#btn-get-rule').on('click', function () {
+            var result = $('#builder').queryBuilder('getRules');
+            if (!$.isEmptyObject(result)) {
+                alert(JSON.stringify(result, null, 2));
+                $('#extracted-rule').val(JSON.stringify(result, null, 2))
+            }
+            else {
+                console.log("invalid object :");
+            }
+            console.log(result);
+        });
+    });
+
+</script>
+

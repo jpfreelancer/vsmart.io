@@ -1,0 +1,127 @@
+
+@{
+    Layout = null;
+    @using SmartAdmin.Seed.Models.Reports;
+    @model ReportViewModel
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+
+    <title> Điểm báo trong tuần </title>
+    <link rel="stylesheet" type="text/css" href="~/css/bootstrap.css" />
+    <link rel="stylesheet" type="text/css" href="~/css/font-awesome.css" />
+
+    <!-- SmartAdmin Styles : Caution! DO NOT change the order -->
+    <link rel="stylesheet" type="text/css" href="~/css/smartadmin-production-plugins.css" />
+    <!-- SmartAdmin Styles : Caution! IE9/IE10 support a limited amount of selectors; use the minified file -->
+    <link rel="stylesheet" type="text/css" href="~/css/smartadmin-production.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700" />
+</head>
+<body>
+    <div class="row">
+
+
+        <div class="col-xs-8 col-sm-8 col-md-8 col-lg-8">
+
+            <h2 class="page-title txt-color-blueDark">
+                <!-- PAGE HEADER -->
+                <i class="fa-fw fa fa-file-text"></i>
+                @Model.ReportTitle
+
+            </h2>
+        </div>
+        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4">
+            <span id="logo" class="pull-right">
+                <a href="#">
+                    <img src="/img/logo.png" alt="S.M.A.R.T">
+                </a>
+            </span>
+        </div>
+
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="well padding-10">
+                <div class="row">
+                    <div class="col-md-12 ">
+                        <label style="font-size: 16px">Chủ đề: @Model.TopicName</label>
+                        <br />
+                        <label style="font-size: 16px">Thời gian: từ @Model.StartDate đến @Model.EndDate</label>
+                        <br />
+                        <label style="font-size: 16px">Số lượng: @Model.Total bài viết</label>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    
+    <div class="row">
+
+        <div class="col-sm-12">
+
+            <div class="well padding-10">
+                @if (Model.Results != null)
+                {
+                    @foreach (var article in Model.Results)
+                    {
+                        <div class="row">
+                            <div class="col-md-12 ">
+                                <h2 class="margin-top-0">
+                                    @article.Title[0]
+                                </h2>
+                                <div class="url" style="font-size:14px"><i class="fa fa-link"></i> @article.Url[0]</div>
+
+                                <br />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                @if (article.ImageUrl != null)
+                                {
+                                    <img src="@article.ImageUrl[0]" class="img-responsive" alt="img">
+                                }
+                                else
+                                {
+                                    <img src="~/img/news-placeholder.png" class="img-responsive" alt="img">
+                                }
+
+                                <ul class="list-inline padding-10">
+                                    <li>
+                                        <i class="fa fa-calendar"></i>
+                                        <a href="javascript:void(0);"> @article.Modified[0] </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <p class="text-justify text" style="font-size: 16px">
+                                    @article.Description[0]
+                                </p>
+                                <p class="text-justify text" style="font-size: 16px">
+                                    @article.Content[0]
+                                </p>
+
+
+
+                            </div>
+                        </div>
+                        <hr>
+
+                    }
+
+
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+</body>
+</html>

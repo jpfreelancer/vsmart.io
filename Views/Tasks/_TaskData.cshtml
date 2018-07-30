@@ -1,0 +1,77 @@
+@{
+    @using SmartAdmin.Seed.Models.ManageViewModels
+    @model TaskViewModel
+}
+<div class="modal-header alert alert-block alert-info">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+        ×
+    </button>
+    <h6 class="modal-title alert-heading"><i class="fa fa-pencil"></i> Tạo tác vụ xử lý bài viết</h6>
+</div>
+
+<form asp-controller="Tasks" asp-action="Create" method="post" id="smart-form-task" class="smart-form" novalidate="novalidate">
+    
+    <div class="modal-body no-padding">
+        <header>@Model.ArticleTitle</header>
+        <fieldset>
+            <div class="row">
+                <div class="col col-lg-12">
+                    <div class="form-group">
+                        <label class="label">Mô tả tác vụ</label>
+                        <label class="textarea" asp-for="Description">
+                            <i class="icon-append fa fa-pencil"></i>
+                            <input asp-for="ArticleUrl" type="text" name="ArticleUrl" class="hidden">
+                            <input asp-for="TopicID" type="text" name="TopicID" class="hidden">
+                            <textarea class="form-control" asp-for="Description" rows="2" name="Description" id="description" placeholder="Nhập mô tả tác vụ"></textarea>
+                        </label>
+                    </div>
+                   </div>
+                </div>
+            <div class="row">
+                <div class="col col-lg-12">
+                    <div class="form-group">
+                        <label class="label">Mức độ ưu tiên</label>
+                        <label class="select">
+                            <select class="form-control" asp-for="Priority" id="priority" style="line-height: 20px!important">
+                                <option value="High">Cao</option>
+                                <option value="Normal">Bình thường</option>
+                                <option value="Low">Thấp</option>
+                            </select> <i></i>
+                        </label>
+                    </div>
+                   
+                </div>
+            </div>
+            <div class="row">
+                <div class="col col-lg-12">
+                    <label class="label">Cường độ quét lại</label>
+                    <label class="select">
+                        <select asp-for="Frequency" id="frequency" style="line-height: 20px!important">
+                            <option value="1">1 tiếng</option>
+                            <option value="2">2 tiếng</option>
+                            <option value="3">3 tiếng</option>
+                        </select> <i></i>
+                    </label>
+                </div>
+            </div>
+        </fieldset>
+
+    </div>
+    <div class="modal-footer" style="padding: 20px;">
+        <button type="submit" class="btn btn-primary" style="padding: 7px">
+            <i class="fa fa-save"></i>
+            Cập nhật
+        </button>
+        <button type="button" class="btn btn-default" style="padding: 7px" data-dismiss="modal">
+            <i class="fa fa-times"></i>
+            Đóng
+        </button>
+    </div>
+</form>
+<script type="text/javascript">
+    // run pagefunction on load
+    //alert('shit');
+    pagefunction();
+
+</script>
+

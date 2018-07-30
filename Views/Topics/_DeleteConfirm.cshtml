@@ -1,0 +1,35 @@
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+<div class="modal-header alert alert-block alert-danger">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+        ×
+    </button>
+    <h6 class="modal-title alert-heading"><i class="fa fa-warning"></i> Xóa chủ đề</h6>
+</div>
+<form asp-controller="Topics" asp-action="Delete" method="post" id="topic-form"  novalidate="novalidate">
+    <div class="modal-body no-padding">
+
+        <fieldset style="padding-top:0px;">
+            <div class="row">
+                <section class="col col-lg-12">
+                    <p class="text-align-left padding-10">Bạn có chắc chắn muốn xóa chủ đề @ViewData["TopicName"].ToString()?</p>
+                </section>
+            </div>
+        </fieldset>       
+
+    </div>
+    <div class="modal-footer" style="padding: 20px;">
+        <input type="hidden" asp-for="@ViewData["ID"]" />
+        <button type="submit" class="btn btn-danger">
+            <i class="fa fa-trash-o"></i>
+            Xóa
+        </button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+            <i class="fa fa-times"></i>
+            Đóng
+        </button>
+    </div>
+</form>
+
+
