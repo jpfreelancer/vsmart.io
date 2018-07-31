@@ -15,4 +15,4 @@ RUN dotnet publish SmartAdmin.Seed.csproj -c Release -o /app
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app .
-ENTRYPOINT ["dotnet", "/src/bin/Release/netcoreapp2.0/SmartAdmin.Seed.dll"]
+ENTRYPOINT ["dotnet", "/bin/Release/netcoreapp2.0/SmartAdmin.Seed.dll"]
