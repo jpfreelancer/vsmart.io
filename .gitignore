@@ -328,3 +328,7 @@ ASALocalRun/
 
 # MFractors (Xamarin productivity tool) working folder 
 .mfractor/
+/docker-compose.dcproj
+/docker-compose.override.yml
+/docker-compose.yml
+/Dockerfile.original

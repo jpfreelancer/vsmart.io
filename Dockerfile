@@ -1,18 +1,16 @@
-FROM gcr.io/google-appengine/aspnetcore:2.0 AS base
+FROM gcr.io/google-appengine/aspnetcore:2.0 AS build-env
 WORKDIR /app
 
-FROM gcr.io/google-appengine/aspnetcore:2.0 AS build
-WORKDIR /src
-COPY SmartAdmin.Seed.csproj ./
-RUN dotnet restore SmartAdmin.Seed.csproj
-COPY . .
-WORKDIR /src/
-RUN dotnet build SmartAdmin.Seed.csproj -c Release -o /app
+# Copy csproj and restore as distinct layers
+COPY *.csproj ./
+RUN dotnet restore
 
-FROM build AS publish
-RUN dotnet publish SmartAdmin.Seed.csproj -c Release -o /app
+# Copy everything else and build
+COPY . ./
+RUN dotnet publish -c Release -o out
 
-FROM base AS final
+# Build runtime image
+FROM gcr.io/google-appengine/aspnetcore:2.0
 WORKDIR /app
-COPY --from=publish /app .
-ENTRYPOINT ["dotnet", "/bin/Release/netcoreapp2.0/SmartAdmin.Seed.dll"]
+COPY --from=build-env /app/out .
+ENTRYPOINT ["dotnet", "SmartAdmin.Seed.dll"]
